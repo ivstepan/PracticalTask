@@ -1,0 +1,70 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.openapitools:openapi-generator-gradle-plugin:3.3.4"
+    }
+}
+
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'org.springframework.boot' version '2.0.1.RELEASE'
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.openapi.generator'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+jar {
+    project.archivesBaseName = 'ClientAutoshowroomREST'
+    version = '1.0.0'
+}
+
+openApiMeta{
+    packageName = "ru.mera.carshowroom.rest.config"
+    generatorName = "java"
+}
+
+openApiGenerate {
+    generatorName ="java"
+    inputSpec ="$rootDir/src/main/resources/carshowroom.yaml".toString() /*"http://localhost:8081/swagger-ui.html"*/
+    outputDir ="$rootDir".toString()
+    httpUserAgent = "OpenAPI-Generator/4.0.0/java"
+//    apiPackage = "ru.mera.carshowroom.rest.api"
+    invokerPackage = "ru.mera.carshowroom.rest"
+    modelPackage = "ru.mera.carshowroom.rest.model"
+    modelFilesConstrainedTo = [
+    ]
+    configOptions = [
+            dateLibrary:"java8"
+    ]
+}
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-web-services'
+    compile 'com.google.code.gson:gson:2.8.5'
+    compile 'io.swagger:swagger-annotations:1.5.20'
+    compile 'io.swagger:swagger-core:1.5.20'
+    compile 'org.springframework.boot:spring-boot-starter-undertow'
+    compile 'io.springfox:springfox-swagger2:2.9.2'
+    compile 'io.springfox:springfox-swagger-ui:2.9.2'
+    compile 'log4j:log4j:1.2.17'
+    compile 'org.springframework.shell:spring-shell-starter:2.0.1.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-webflux'
+    compile 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
+    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
+    compile 'javax.xml.ws:jaxws-api:2.3.0'
+    compile 'javax.jws:javax.jws-api:1.1'
+
+    implementation 'com.google.guava:guava:23.0'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+repositories {
+    mavenCentral()
+}

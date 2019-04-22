@@ -1,0 +1,52 @@
+version: '3.3'
+services:
+
+    db:
+        image: mcr.microsoft.com/mssql/server:2017-latest
+        ports:
+            - 1400:1400
+        volumes:
+            - dbdefault:/var/opt/mssql
+        environment:
+            - SA_PASSWORD=QWEzxc!86
+            - ACCEPT_EULA=Y
+        container_name: db
+
+#    db:
+#        image: postgres:10.1
+#        restart: always
+#        volumes:
+#            - dbdefault:/var/lib/postgresql/data/
+#        environment:
+#            - POSTGRES_PASSWORD=postgres
+#            - POSTGRES_USER=postgres
+#            - POSTGRES_DB=postgres
+#        ports:
+#            - 5432
+#        container_name: db
+            
+    rest:
+        image: restserver:latest
+        build:
+            context: ./rest
+            dockerfile: Dockerfile
+        depends_on:
+            - db
+        ports:
+            - 8081:8081
+        container_name: restserver
+
+    soap:
+        image: soapserver:latest
+        build:
+            context: ./soap
+            dockerfile: Dockerfile
+        depends_on:
+          - db
+        ports:
+            - 9000:9000
+        container_name: soapserver
+
+volumes:
+    dbdefault:
+        external: true

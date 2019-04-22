@@ -1,0 +1,45 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.20.RELEASE'
+    }
+}
+
+plugins {
+    id 'java'
+}
+
+apply plugin: 'org.springframework.boot'
+
+jar {
+    baseName = 'ClientAutoshowroomSoAP'
+    version = '1.0.0'
+}
+
+group = 'ru.mera.carshowroom'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://repo.spring.io/libs-snapshot'
+    }
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-web-services'
+	compile 'javax.xml.ws:jaxws-api:2.3.0'
+    compile 'javax.jws:javax.jws-api:1.1'
+    compile 'org.apache.cxf:cxf-spring-boot-starter-jaxrs:3.2.5'
+    compile 'org.apache.cxf:cxf-rt-features-logging:3.2.5'
+    compile 'org.apache.cxf:cxf-rt-frontend-jaxws:3.2.5'
+    compile 'log4j:log4j:1.2.17'
+    compile 'org.springframework.shell:spring-shell-starter:2.0.1.BUILD-SNAPSHOT'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+}

@@ -1,0 +1,74 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.openapitools:openapi-generator-gradle-plugin:3.3.4"
+    }
+}
+
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'org.springframework.boot' version '2.0.1.RELEASE'
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.openapi.generator'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+openApiMeta{
+    packageName = "ru.mera.ivstepan.carshowroom.rest.config"
+    generatorName = "spring"
+}
+
+openApiGenerate {
+    generatorName ="spring"
+    inputSpec ="$rootDir/src/main/resources/carshowroom.yaml".toString()
+    outputDir ="$rootDir".toString()
+    httpUserAgent = "OpenAPI-Generator/4.0.0/java"
+    apiPackage = "ru.mera.ivstepan.carshowroom.rest.api"
+    invokerPackage = "ru.mera.ivstepan.carshowroom.rest"
+    modelPackage = "ru.mera.ivstepan.carshowroom.rest.model"
+    modelFilesConstrainedTo = [
+    ]
+    configOptions = [
+            dateLibrary:"java8"
+    ]
+}
+
+group = 'ru.mera.ivstepan.carshowroom'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'org.springframework.boot:spring-boot-starter-web-services'
+    compile 'com.microsoft.sqlserver:mssql-jdbc'
+    compile 'org.postgresql:postgresql'
+    compile 'com.google.code.gson:gson:2.8.5'
+    compile 'io.swagger:swagger-annotations:1.5.20'
+    compile 'io.swagger:swagger-core:1.5.20'
+    compile 'org.springframework.boot:spring-boot-starter-undertow'
+    compile 'io.springfox:springfox-swagger2:2.9.2'
+    compile 'io.springfox:springfox-swagger-ui:2.9.2'
+
+    compile 'org.springframework.boot:spring-boot-starter-webflux'
+    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
+
+//    compile 'org.apache.cxf:cxf-spring-boot-starter-jaxrs:3.2.5'
+//    compile 'org.apache.cxf:cxf-rt-features-logging:3.2.5'
+//    compile 'org.apache.cxf:cxf-rt-frontend-jaxws:3.2.5'
+
+    compile 'log4j:log4j:1.2.17'
+
+    implementation 'com.google.guava:guava:23.0'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+repositories {
+    mavenCentral()
+}

@@ -1,0 +1,24 @@
+plugins {
+	id 'java'
+}
+
+subprojects {
+	apply plugin: "java"
+	repositories {
+		mavenCentral()
+	}
+}
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+project (':rest') {
+	dependencies {
+		compile project(':soap')
+	}
+}
+
+project (':soap') {
+}

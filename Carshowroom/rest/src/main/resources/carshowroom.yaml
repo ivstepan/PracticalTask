@@ -1,0 +1,241 @@
+openapi: "3.0.0"
+
+info:
+  title: Carshowroom
+  description: Server part of the application carshowroom
+  version: 1.0.0
+
+servers:
+- url: localhost:8081
+
+paths:
+  /api/createOrder:
+    post:
+      summary: Create new order
+      description: Save selected brand, car model and advanced options
+      operationId: apiCreateOrderPost
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderDTO'
+      responses:
+        200:
+          description: OK
+        400:
+          description: NOK
+        404:
+          description: NOT FOUND
+        500:
+          description: INTERNAL ERROR
+
+  /api/updateOrder:
+    put:
+      summary: Update existing order
+      description: Update brand, car model or advanced options
+      operationId: apiUpdateOrderPut
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AutoDTO'
+      responses:
+        200:
+          description: OK
+        400:
+          description: NOK
+        404:
+          description: NOT FOUND
+        500:
+          description: INTERNAL ERROR
+
+  /api/deleteOrder/{id}:
+    delete:
+      summary: Delete existing order
+      description: Delete all transferred order data
+      operationId: apiDeleteOrderIdDelete
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+        description: Deleted order id
+      responses:
+        200:
+          description: OK
+        400:
+          description: NOK
+        404:
+          description: NOT FOUND
+        500:
+          description: INTERNAL ERROR
+
+  /api/createCustomer:
+    post:
+      summary: Create customer
+      description: Save the first name, last name, email and date of birth of the client
+      operationId: apiCreateCustomerPost
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerDTO'
+      responses:
+        200:
+          description: OK
+        400:
+          description: NOK
+        404:
+          description: NOT FOUND
+        500:
+          description: INTERNAL ERROR
+
+  /api/getCustomerOrders/{id}/{status}:
+    get:
+      summary: Get a customer order
+      description: Get all orders of the selected client by order status with indication of customer data, brand and model of the selected car
+      operationId: apiCustomerOrdersIdStatusGet
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+        description: Customer id
+      - in: path
+        name: status
+        schema:
+          type: string
+        required: true
+        description: Status order
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderDTO'
+        400:
+          description: NOK
+        404:
+          description: NOT FOUND
+        500:
+          description: INTERNAL ERROR
+
+  /api/getAllOrders:
+    get:
+      summary: Get all orders
+      description: Get all existing orders with customer data, brand and model of the selected vehicle
+      operationId: apiAllOrdersGet
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderDTO'
+        400:
+          description: NOK
+        404:
+          description: NOT FOUND
+        500:
+          description: INTERNAL ERROR
+
+components:
+  schemas:
+    AutoDTO:
+      type: object
+      properties:
+        orderId:
+          type: integer
+          example: 1
+        customerId:
+          type: integer
+          example: 1
+        brand:
+          type: string
+          example: "Audi"
+        model:
+          type: string
+          example: "A6"
+        autoOptionsElement:
+          $ref: '#/components/schemas/AutoOptionsDTO'
+      required:
+      - customerId
+      - brand
+      - model
+      - autoOptionsElement
+
+    AutoOptionsDTO:
+      type: object
+      properties:
+        heatedWindshieldPrice:
+          type: boolean
+          default: false
+        heatedSeatsPrice:
+          type: boolean
+          default: false
+        electricScootersPrice:
+          type: boolean
+          default: false
+        airbagsPrice:
+          type: boolean
+          default: false
+        floorMatsPrice:
+          type: boolean
+          default: false
+        winterTiresPrice:
+          type: boolean
+          default: false
+
+    CustomerDTO:
+      type: object
+      properties:
+        customerId:
+          type: integer
+          example: 1
+        firstName:
+          type: string
+          example: Flint
+        lastName:
+          type: string
+          example: Capitan
+        email:
+          type: string
+          example: tortuga@island.com
+        birthday:
+          type: string
+          example: "1985-05-23"
+      required:
+      - firstName
+      - lastName
+      - email
+      - birthday
+
+    OrderDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        status:
+          type: string
+          example: RECEIVED
+          enum:
+          - RECEIVED
+          - PROCESS
+          - COMPLETED
+        date:
+          type: string
+        customer:
+          $ref: '#/components/schemas/CustomerDTO'
+        auto:
+          $ref: '#/components/schemas/AutoDTO'
